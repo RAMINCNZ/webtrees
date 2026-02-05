@@ -92,14 +92,16 @@ class Tree
         'WORD_WRAPPED_NOTES'          => '0',
     ];
 
+    private bool $default_resn_loaded = false;
+
     /** @var array<int> Default access rules for facts in this tree */
-    private array $fact_privacy;
+    private array $fact_privacy = [];
 
     /** @var array<int> Default access rules for individuals in this tree */
-    private array $individual_privacy;
+    private array $individual_privacy = [];
 
     /** @var array<array<int>> Default access rules for individual facts in this tree */
-    private array $individual_fact_privacy;
+    private array $individual_fact_privacy = [];
 
     /** @var array<string> Cached copy of the wt_gedcom_setting table. */
     private array $preferences = [];
@@ -118,29 +120,6 @@ class Tree
         private readonly int|null $contact_user_id,
         private readonly int|null $support_user_id,
     ) {
-        $this->fact_privacy            = [];
-        $this->individual_privacy      = [];
-        $this->individual_fact_privacy = [];
-
-        // Load the privacy settings for this tree
-        $rows = DB::table('default_resn')
-            ->where('gedcom_id', '=', $this->id)
-            ->get();
-
-        foreach ($rows as $row) {
-            // Convert GEDCOM privacy restriction to a webtrees access level.
-            $row->resn = self::RESN_PRIVACY[$row->resn];
-
-            if ($row->xref !== null) {
-                if ($row->tag_type !== null) {
-                    $this->individual_fact_privacy[$row->xref][$row->tag_type] = $row->resn;
-                } else {
-                    $this->individual_privacy[$row->xref] = $row->resn;
-                }
-            } else {
-                $this->fact_privacy[$row->tag_type] = $row->resn;
-            }
-        }
     }
 
     /**
@@ -323,6 +302,10 @@ class Tree
      */
     public function getFactPrivacy(): array
     {
+        if (!$this->default_resn_loaded) {
+            $this->loadDefaultResn();
+        }
+
         return $this->fact_privacy;
     }
 
@@ -333,6 +316,10 @@ class Tree
      */
     public function getIndividualPrivacy(): array
     {
+        if (!$this->default_resn_loaded) {
+            $this->loadDefaultResn();
+        }
+
         return $this->individual_privacy;
     }
 
@@ -343,7 +330,35 @@ class Tree
      */
     public function getIndividualFactPrivacy(): array
     {
+        if (!$this->default_resn_loaded) {
+            $this->loadDefaultResn();
+        }
+
         return $this->individual_fact_privacy;
+    }
+
+    private function loadDefaultResn(): void
+    {
+        $rows = DB::table('default_resn')
+            ->where('gedcom_id', '=', $this->id)
+            ->get();
+
+        foreach ($rows as $row) {
+            // Convert GEDCOM privacy restriction to a webtrees access level.
+            $row->resn = self::RESN_PRIVACY[$row->resn];
+
+            if ($row->xref !== null) {
+                if ($row->tag_type !== null) {
+                    $this->individual_fact_privacy[$row->xref][$row->tag_type] = $row->resn;
+                } else {
+                    $this->individual_privacy[$row->xref] = $row->resn;
+                }
+            } else {
+                $this->fact_privacy[$row->tag_type] = $row->resn;
+            }
+        }
+
+        $this->default_resn_loaded = true;
     }
 
     /**
