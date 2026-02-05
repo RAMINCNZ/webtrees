@@ -251,11 +251,9 @@ class GedcomExportService
                             }
 
                             if ($zip_filesystem instanceof ZipArchive) {
-                                // If the media file is stored locally, we can add it directly to the ZipArchive
-                                // $local_file = Site::getPreference('INDEX_DIRECTORY') . $tree->mediaFolder() . $media_path . $media_file;
-                                // $zip_filesystem->addFile($local_file, $media_path . $media_file);
-
                                 $zip_filesystem->addFromString($media_path . $media_file, $media_filesystem->read($media_file));
+                                // Media files are (almost always) already compressed.
+                                $zip_filesystem->setCompressionName($media_path . $media_file, ZipArchive::CM_STORE);
                             }
                         }
                     }
