@@ -46,8 +46,8 @@ class Migration39 implements MigrationInterface
                 $table->index('user_id');
                 $table->index(['gedcom_id', 'user_id']);
 
-                $table->foreign('user_id')->references('user_id')->on('user')->onDelete('cascade');
-                $table->foreign('gedcom_id')->references('gedcom_id')->on('gedcom')->onDelete('cascade');
+                $table->foreign('user_id')->references('user_id')->on('user')->cascadeOnDelete();
+                $table->foreign('gedcom_id')->references('gedcom_id')->on('gedcom')->cascadeOnDelete();
             });
         }
     }

@@ -67,8 +67,8 @@ class Migration42 implements MigrationInterface
             $table->unique(['gedcom_id', 'module_name', 'interface'], $key1);
             $table->unique(['module_name', 'gedcom_id', 'interface'], $key2);
 
-            $table->foreign('module_name')->references('module_name')->on('module')->onDelete('cascade');
-            $table->foreign('gedcom_id')->references('gedcom_id')->on('gedcom')->onDelete('cascade');
+            $table->foreign('module_name')->references('module_name')->on('module')->cascadeOnDelete();
+            $table->foreign('gedcom_id')->references('gedcom_id')->on('gedcom')->cascadeOnDelete();
         });
 
         foreach ($data as $datum) {
