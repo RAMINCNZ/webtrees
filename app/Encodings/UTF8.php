@@ -839,41 +839,4 @@ class UTF8 extends AbstractEncoding
     {
         return $this->fromUtf8($text);
     }
-
-    /**
-     * Create a UTF8 character from a code.
-     *
-     * @param int $code
-     *
-     * @return string
-     */
-    public static function chr(int $code): string
-    {
-        if ($code < 0 || $code > 0x1FFFFF) {
-            throw new InvalidArgumentException((string)$code);
-        }
-
-        if ($code <= 0x7F) {
-            return chr($code);
-        }
-
-        if ($code <= 0x7FF) {
-            return
-                chr(($code >> 6) + 0xC0) .
-                chr(($code & 0x3F) + 0x80);
-        }
-
-        if ($code <= 0xFFFF) {
-            return
-                chr(($code >> 12) + 0xE0) .
-                chr((($code >> 6) & 0x3F) + 0x80) .
-                chr(($code & 0x3F) + 0x80);
-        }
-
-        return
-            chr(($code >> 18) + 0xF0) .
-            chr((($code >> 12) & 0x3F) + 0x80) .
-            chr((($code >> 6) & 0x3F) + 0x80) .
-            chr(($code & 0x3F) + 0x80);
-    }
 }

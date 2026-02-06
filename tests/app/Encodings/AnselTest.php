@@ -141,7 +141,7 @@ class AnselTest extends TestCase
 
         foreach ($latin_code_blocks as $codes) {
             foreach ($codes as $code) {
-                $utf8 = UTF8::chr($code);
+                $utf8 = mb_chr($code, 'UTF-8');
                 $norm = normalizer_normalize($utf8, Normalizer::FORM_D);
                 self::assertIsString($norm);
 
