@@ -57,17 +57,22 @@ class DebugLogger implements MiddlewareInterface
             $bindings = $query['bindings'];
             foreach ($bindings as $binding) {
                 if (is_string($binding)) {
-                    if (mb_strlen($binding) > 10) {
-                        $binding = mb_substr($binding, 0, 9) . '...';
-                    }
-
+                    // RFC7230 allows only visible ASCII.  "?" breaks later substitutions.
+                    $binding = strtr($binding, ["\n" => '\n', "\t" => '\t']);
+                    $callback = static fn (array $matches): string => '\\x' . sprintf('%02X', ord($matches[0]));
+                    $binding  = preg_replace_callback('/[^ !->@-~]/', $callback, $binding);
                     $binding = "'" . $binding . "'";
+
+                    if (mb_strlen($binding) > 30) {
+                        $binding = mb_substr($binding, 0, 27) . '...';
+                    }
                 } else {
                     $binding = (string) $binding;
                 }
 
                 $sql = preg_replace('/\?/', $binding, $sql, 1);
             }
+
             $message  = sprintf('%s (%.3f ms)', $sql, $time);
             $response = $response->withAddedHeader('x-debug-sql', $message);
         }
