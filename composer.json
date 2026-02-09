@@ -86,8 +86,8 @@
         "phpstan/extension-installer": "1.4.3",
         "phpstan/phpstan": "2.1.38",
         "phpstan/phpstan-deprecation-rules": "2.0.3",
-        "phpstan/phpstan-phpunit": "2.0.12",
-        "phpunit/phpunit": "12.5.9",
+        "phpstan/phpstan-phpunit": "2.0.13",
+        "phpunit/phpunit": "12.5.10",
         "squizlabs/php_codesniffer": "4.0.1"
     },
     "suggest": {
