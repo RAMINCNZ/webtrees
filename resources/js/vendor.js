@@ -65,8 +65,6 @@ TomSelect.define('virtual_scroll', require('tom-select/dist/js/plugins/virtual_s
 
 window.TomSelect = TomSelect;
 
-import 'hideshowpassword';
-
 import 'moment';
 
 import 'jquery-colorbox';

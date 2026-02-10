@@ -983,32 +983,6 @@ $(function () {
   $('.wt-osk-close').on('click', function () {
     $('.wt-osk').hide();
   });
-
-  // Hide/Show password fields
-  $('input[type=password]').each(function () {
-    $(this).hideShowPassword('infer', true, {
-      states: {
-        shown: {
-          toggle: {
-            content: this.dataset.wtHidePasswordText,
-            attr: {
-              title: this.dataset.wtHidePasswordTitle,
-              'aria-label': this.dataset.wtHidePasswordTitle,
-            }
-          }
-        },
-        hidden: {
-          toggle: {
-            content: this.dataset.wtShowPasswordText,
-            attr: {
-              title: this.dataset.wtShowPasswordTitle,
-              'aria-label': this.dataset.wtShowPasswordTitle,
-            }
-          }
-        }
-      }
-    });
-  });
 });
 
 // Prevent form re-submission via accidental double-click.
