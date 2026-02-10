@@ -55,7 +55,7 @@ class AncestorsChartModule extends AbstractModule implements ModuleChartInterfac
 
     // Limits
     protected const int MINIMUM_GENERATIONS = 2;
-    protected const int MAXIMUM_GENERATIONS = 10;
+    protected const int MAXIMUM_GENERATIONS = PHP_INT_SIZE === 4 ? 31 : 63;
 
     private ChartService $chart_service;
 

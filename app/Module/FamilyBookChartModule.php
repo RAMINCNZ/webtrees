@@ -53,7 +53,7 @@ class FamilyBookChartModule extends AbstractModule implements ModuleChartInterfa
     protected const int MAXIMUM_BOOK_SIZE = 5;
 
     protected const int MINIMUM_GENERATIONS = 2;
-    protected const int MAXIMUM_GENERATIONS = 10;
+    protected const int MAXIMUM_GENERATIONS = PHP_INT_SIZE === 4 ? 31 : 63;
 
     /**
      * Initialization.
