@@ -152,3 +152,15 @@ a:hover, .btn-link:hover, .nav-link:hover {
 .leaflet-bottom, .leaflet-top {
     z-index: 999;
 }
+
+/* Show a spinner if the page takes more than 1 second to load. */
+@keyframes spinner-fade-in {
+    to { opacity: 1; }
+}
+
+.wt-icon-spinner {
+    color: lightgrey;
+    opacity: 0;
+    animation: spinner-fade-in 0.5s ease-in forwards;
+    animation-delay: 1s;
+}
